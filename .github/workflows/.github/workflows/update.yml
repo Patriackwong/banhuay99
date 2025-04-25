@@ -1,0 +1,30 @@
+name: Update Lotto Result
+
+on:
+  schedule:
+    - cron: '0 11 * * *'  # รันทุกวันเวลา 18:00 (ไทย)
+  workflow_dispatch:      # สามารถกดรันเองได้ด้วย
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Run Python Script
+      run: python update.py
+
+    - name: Commit and push
+      run: |
+        git config --global user.name "github-actions"
+        git config --global user.email "action@github.com"
+        git add index.html
+        git commit -m "Update lotto result"
+        git push
